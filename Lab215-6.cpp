@@ -1,7 +1,6 @@
 // Lab215-6.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+//By Matt Schuler with code template from CGT215 course material; composites two images
 
-#include <iostream>
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -25,15 +24,22 @@ int main() {
 	Image foregroundImage;
 	foregroundImage = foregroundTex.copyToImage();
 	Vector2u sz = backgroundImage.getSize();
+
+	//Set base green color to compare to
+	Color green1 = foregroundImage.getPixel(0, 0);
+
 	for (int y = 0; y < sz.y; y++) {
 		for (int x = 0; x < sz.x; x++) {
-			// These two loops will run the code inside for each pixel in the background image
-				// You can access the current pixel at x,y like so:
-				Color example = foregroundImage.getPixel(x, y);
-			// Color objects store the individual channel values like example.r example.g and example.b
+			Color fg = foregroundImage.getPixel(x, y);
+			Color bg = backgroundImage.getPixel(x, y); 
+			//Compare foreground rgb to green rgb and replace with bg if same
+			if ((fg.r == green1.r) && (fg.g == green1.g) && (fg.b == green1.b)) {
+				foregroundImage.setPixel(x,y,bg);
+			}
 		}
 	}
-	// By default, just show the foreground image
+
+	// Show foreground image
 	RenderWindow window(VideoMode(1024, 768), "Here's the output");
 	Sprite sprite1;
 	Texture tex1;
